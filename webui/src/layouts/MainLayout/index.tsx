@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom';
+import PageNav from "@/components/global/PageNav";
 import styles from './MainLayout.module.css';
 
 const MainLayout = () => {
@@ -6,7 +7,7 @@ const MainLayout = () => {
         <div className={styles.container}>
             <header className={styles.header}>ヘッダー</header>
             <div className={styles.contentWrapper}>
-                <aside className={styles.sidebarLeft}>左サイドバー</aside>
+                <aside className={styles.sidebarLeft}><PageNav /></aside>
                 <main className={styles.main}>
                     <Outlet />
                 </main>
