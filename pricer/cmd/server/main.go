@@ -1,18 +1,15 @@
 package main
 
 import (
-	"net/http"
+    "log"
+    "net/http"
 
-	"github.com/go-chi/chi/v5"
+    "github.com/chiyonn/vendiq2/pricer/internal/router"
 )
 
 func main() {
-	r := chi.NewRouter()
+    r := router.NewRouter()
 
-	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"status":"ok"}`))
-	})
-
-	http.ListenAndServe(":8080", r)
+    log.Println("Starting server on :8080")
+    http.ListenAndServe(":8080", r)
 }
