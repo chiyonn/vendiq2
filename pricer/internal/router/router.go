@@ -4,15 +4,13 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+    "github.com/chiyonn/vendiq2/pricer/internal/handler"
 )
 
 func NewRouter() http.Handler {
 	r := chi.NewRouter()
 
-	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"status":"ok"}`))
-	})
+	r.Get("/health", handler.Health)
 
 	return r
 }
