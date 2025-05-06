@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/chiyonn/vendiq2/pricer/internal/db"
-	"github.com/chiyonn/vendiq2/pricer/internal/di"
-	"github.com/chiyonn/vendiq2/pricer/internal/router"
+	"github.com/chiyonn/vendiq2/api/internal/db"
+	"github.com/chiyonn/vendiq2/api/internal/di"
+	"github.com/chiyonn/vendiq2/api/internal/router"
 )
 
 func main() {

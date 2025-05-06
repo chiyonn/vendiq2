@@ -10,16 +10,16 @@ services:
     volumes:
       - ./webui:/app
 
-  pricer:
-    container_name: dev-vendiq2-pricer
+  api:
+    container_name: dev-vendiq2-api
     build:
-      context: ./pricer
+      context: ./api
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     command: air
     volumes:
-      - ./pricer:/app
+      - ./api:/app
     environment:
       - APP_ENV=development
       - DB_HOST=${DB_HOST}

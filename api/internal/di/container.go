@@ -1,9 +1,9 @@
 package di
 
 import (
-	"github.com/chiyonn/vendiq2/pricer/internal/handler"
-	"github.com/chiyonn/vendiq2/pricer/internal/repository"
-	"github.com/chiyonn/vendiq2/pricer/internal/service"
+	"github.com/chiyonn/vendiq2/api/internal/handler"
+	"github.com/chiyonn/vendiq2/api/internal/repository"
+	"github.com/chiyonn/vendiq2/api/internal/service"
 	"gorm.io/gorm"
 )
 

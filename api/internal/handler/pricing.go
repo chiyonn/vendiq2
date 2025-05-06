@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/chiyonn/vendiq2/pricer/internal/service"
+	"github.com/chiyonn/vendiq2/api/internal/service"
 )
 
 type PricingHandler struct {

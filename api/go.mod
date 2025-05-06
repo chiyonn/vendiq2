@@ -1,4 +1,4 @@
-module github.com/chiyonn/vendiq2/pricer
+module github.com/chiyonn/vendiq2/api
 
 go 1.23.7
 

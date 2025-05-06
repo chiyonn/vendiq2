@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/chiyonn/vendiq2/pricer/internal/model"
-	"github.com/chiyonn/vendiq2/pricer/internal/repository"
+	"github.com/chiyonn/vendiq2/api/internal/model"
+	"github.com/chiyonn/vendiq2/api/internal/repository"
 )
 
 type PricingService struct {

@@ -3,7 +3,7 @@ package db
 import (
 	"log"
 
-	"github.com/chiyonn/vendiq2/pricer/internal/model"
+	"github.com/chiyonn/vendiq2/api/internal/model"
 )
 
 func Migrate() {

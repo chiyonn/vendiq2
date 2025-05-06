@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/chiyonn/vendiq2/pricer/internal/model"
+	"github.com/chiyonn/vendiq2/api/internal/model"
 	"gorm.io/gorm"
 )
 

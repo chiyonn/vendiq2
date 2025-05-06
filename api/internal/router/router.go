@@ -3,8 +3,8 @@ package router
 import (
 	"net/http"
 
-	"github.com/chiyonn/vendiq2/pricer/internal/di"
-	"github.com/chiyonn/vendiq2/pricer/internal/handler"
+	"github.com/chiyonn/vendiq2/api/internal/di"
+	"github.com/chiyonn/vendiq2/api/internal/handler"
 	"github.com/go-chi/chi/v5"
 )
 
