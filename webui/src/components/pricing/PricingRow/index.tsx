@@ -3,13 +3,16 @@ import { ChangeEvent } from 'react';
 
 export type PricingItem = {
     asin: string;
-    image_url: string;
-    current_price: number;
-    min_price: number;
-    buybox_seller_id: string;
-    last_priced: string;
-    num_of_sellers: number;
-    enable: boolean;
+    mainImageUrl: string;
+    minPrice?: number;
+    maxPrice?: number;
+    numOfSellers: number;
+    buyboxPrice: number;
+    buyboxSellerId: string;
+    autoPricing: boolean;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
 };
 
 type Props = {
@@ -41,39 +44,39 @@ export const PricingRow = ({ index, item, onChange, onSave }: Props) => {
     const handleMinPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = Number(e.target.value);
         if (!isNaN(value)) {
-            onChange(index, { min_price: value });
+            onChange(index, { minPrice: value });
         }
     };
 
     const handleEnableToggle = (e: ChangeEvent<HTMLInputElement>) => {
-        onChange(index, { enable: e.target.checked });
+        onChange(index, { autoPricing: e.target.checked });
     };
 
     return (
         <div className={styles.itemRow}>
             <div>{item.asin}</div>
             <div>
-                <img src={item.image_url} alt={item.asin} className={styles.image} />
+                <img src={item.mainImageUrl} alt={item.asin} className={styles.image} />
             </div>
-            <div>¥{item.current_price}</div>
+            <div>¥{item.buyboxPrice}</div>
             <div>
                 <input
                     type="number"
-                    value={item.min_price}
+                    value={item.buyboxPrice}
                     onChange={handleMinPriceChange}
                     className={styles.input}
                 />
             </div>
-            <div>{item.num_of_sellers}</div>
-            <div>{item.buybox_seller_id === my_seller_id ? "YES" : "NO"}</div>
+            <div>{item.numOfSellers}</div>
+            <div>{item.buyboxSellerId === my_seller_id ? "YES" : "NO"}</div>
             <div>
                 <input
                     type="checkbox"
-                    checked={item.enable}
+                    checked={item.autoPricing}
                     onChange={handleEnableToggle}
                 />
             </div>
-            <div>{new Date(item.last_priced).toLocaleString()}</div>
+            <div>{new Date(item.updatedAt).toLocaleString()}</div>
             <div>
                 <button onClick={() => onSave(index, item)}>保存</button>
             </div>
