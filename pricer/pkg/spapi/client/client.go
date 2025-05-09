@@ -10,16 +10,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/internal/queryutil"
 	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/types"
 )
 
 const tokenEndpoint = "https://api.amazon.com/auth/o2/token"
 
 type Client struct {
-	BaseURL      string
-	HTTPClient   *http.Client
-	Logger       *types.Logger
+	BaseURL    string
+	HTTPClient *http.Client
+	Logger     *types.Logger
 
 	mu           sync.Mutex
 	accessToken  string
@@ -113,4 +112,3 @@ func (c *Client) SendRequest(ctx context.Context, endpoint *types.Endpoint, para
 
 	return body, nil
 }
-
