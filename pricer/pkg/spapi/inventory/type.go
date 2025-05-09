@@ -1,9 +1,9 @@
 package inventory
 
 import (
-    "time"
+	"time"
 
-	"github.com/chiyonn/vendiq2/pricer/pkg/types"
+	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/types"
 )
 
 type GetInventorySummariesParams struct {
@@ -17,7 +17,6 @@ type GetInventorySummariesParams struct {
 	MarketplaceIds  *[]string
 }
 
-
 type GetInventorySummariesResponse struct {
 	Payload    *GetInventorySummariesResult `json:"payload"`
 	Pagination *Pagination                  `json:"pagination"`
@@ -26,7 +25,7 @@ type GetInventorySummariesResponse struct {
 
 type GetInventorySummariesResult struct {
 	granularity        Granularity
-	inventorySummaries []InventorySummary
+	InventorySummaries []InventorySummary
 }
 
 type Granularity struct {
@@ -47,7 +46,7 @@ type InventorySummary struct {
 }
 
 type Pagination struct {
-	nextToken *string
+	NextToken *string
 }
 
 type InventoryDetails struct {

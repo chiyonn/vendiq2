@@ -1,31 +1,62 @@
 package bot
 
 import (
-	"github.com/chiyonn/vendiq2/pricer/internal/client"
+	"context"
+	"log"
+
+	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/client"
+	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/inventory"
 )
 
-type PricerBot struct {
-	BaseBot
-	spapi *client.SPAPIClient
+type PricerBot interface {
+	Run(ctx context.Context) error
+	Stop(ctx context.Context) error
 }
 
-func NewPricerBot(spapi *client.SPAPIClient) *PricerBot {
-	return &PricerBot{
-		spapi: spapi,
+type pricerBot struct {
+	client *client.Client
+}
+
+func NewPricerBot(c *client.Client) PricerBot {
+	return &pricerBot{
+		client: c,
 	}
 }
 
-func (b *PricerBot) Run() {
+func (b *pricerBot) Run(ctx context.Context) error {
+	return b.fetchAllProductsOnSale(ctx)
+}
+
+func (b *pricerBot) Stop(ctx context.Context) error {
+	return nil
+}
+
+func (b *pricerBot) fetchAllProductsOnSale(ctx context.Context) error {
+
+	var allSummaries []inventory.InventorySummary
+    var details bool = true
+	var nextToken *string
+
 	for {
-        b.fetchAllProductsOnSale()
+        params := &inventory.GetInventorySummariesParams{
+            Details: &details,
+            NextToken: nextToken,
+        }
+
+		res, err := inventory.GetInventorySummaries(ctx, b.client, params)
+		if err != nil {
+			return err
+		}
+
+		allSummaries = append(allSummaries, res.Payload.InventorySummaries...)
+
+		if res.Pagination == nil || res.Pagination.NextToken == nil || *res.Pagination.NextToken == "" {
+			break
+		}
+		nextToken = res.Pagination.NextToken
 	}
+
+	log.Printf("在庫取得できた件数: %d", len(allSummaries))
+	return nil
 }
 
-func (b *PricerBot) fetchAllProductsOnSale() {
-    params := client.GetInventorySummariesParams{}
-
-    res, err := b.spapi.GetInventorySummaries(&params)
-    if err != nil {
-        return nil, err
-    }
-}
