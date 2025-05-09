@@ -18,7 +18,7 @@ var getInventorySummaries = rateutil.NewEndpointLimitedFunc[*GetInventorySummari
 	Burst:  2,
 })
 
-func GetInventorySummaries(ctx context.Context, c *client.Client, params *GetInventorySummariesParams) (*GetInventorySummariesResponse, error) {
+func GetInventorySummaries(ctx context.Context, c *client.Client, params types.Queryable) (*GetInventorySummariesResponse, error) {
 	return getInventorySummaries(ctx, c, func(ctx context.Context, c *client.Client, e *types.Endpoint) (*GetInventorySummariesResponse, error) {
 		if err := rateutil.Wait(ctx, e); err != nil {
 			return nil, fmt.Errorf("rate limit exceeded: %w", err)
@@ -31,10 +31,6 @@ func GetInventorySummaries(ctx context.Context, c *client.Client, params *GetInv
 
 		var response GetInventorySummariesResponse
 		if err := json.Unmarshal(body, &response); err != nil {
-			var apiErr types.APIError
-			if json.Unmarshal(body, &apiErr) == nil {
-				c.Logger.Printf("SPAPI error: code=%s, message=%s", apiErr.Code, apiErr.Message)
-			}
 			return nil, fmt.Errorf("failed to decode response: %w", err)
 		}
 
