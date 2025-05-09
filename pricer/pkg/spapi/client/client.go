@@ -10,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/internal/queryutil"
 	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/types"
 )
 
@@ -18,7 +19,7 @@ const tokenEndpoint = "https://api.amazon.com/auth/o2/token"
 type Client struct {
 	BaseURL      string
 	HTTPClient   *http.Client
-	Logger       Logger
+	Logger       *types.Logger
 
 	mu           sync.Mutex
 	accessToken  string
@@ -28,7 +29,7 @@ type Client struct {
 	clientSecret string
 }
 
-func New(cfg *types.Config, logger Logger) *Client {
+func New(cfg *types.Config, logger *types.Logger) *Client {
 	return &Client{
 		BaseURL:      cfg.BaseURL,
 		HTTPClient:   &http.Client{Timeout: 10 * time.Second},
@@ -46,8 +47,6 @@ func (c *Client) getAccessToken(ctx context.Context) error {
 	if time.Until(c.expiresAt) > 2*time.Minute {
 		return nil // still valid
 	}
-
-	c.Logger.Printf("Refreshing SPAPI access token")
 
 	reqBody, _ := json.Marshal(map[string]string{
 		"grant_type":    "refresh_token",
@@ -83,12 +82,12 @@ func (c *Client) getAccessToken(ctx context.Context) error {
 	return nil
 }
 
-func (c *Client) SendRequest(ctx context.Context, endpoint *types.Endpoint, params interface{}) ([]byte, error) {
+func (c *Client) SendRequest(ctx context.Context, endpoint *types.Endpoint, params types.Queryable) ([]byte, error) {
 	if err := c.getAccessToken(ctx); err != nil {
 		return nil, fmt.Errorf("token error: %w", err)
 	}
 
-	fullURL := fmt.Sprintf("%s%s?%s", c.BaseURL, endpoint.Path, buildQuery(params))
+	fullURL := fmt.Sprintf("%s%s?%s", c.BaseURL, endpoint.Path, params.Stringfy())
 	req, err := http.NewRequestWithContext(ctx, endpoint.Method, fullURL, nil)
 	if err != nil {
 		return nil, fmt.Errorf("request creation failed: %w", err)

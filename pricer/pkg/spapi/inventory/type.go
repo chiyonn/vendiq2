@@ -3,6 +3,7 @@ package inventory
 import (
 	"time"
 
+	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/internal/queryutil"
 	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/types"
 )
 
@@ -15,6 +16,9 @@ type GetInventorySummariesParams struct {
 	SellerSku       *string
 	NextToken       *string
 	MarketplaceIds  *[]string
+}
+func (p *GetInventorySummariesParams) Stringfy() string {
+    return queryutil.StructToQuery(p)
 }
 
 type GetInventorySummariesResponse struct {
