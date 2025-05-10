@@ -10,7 +10,7 @@ const PricingPage = () => {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const res = await fetch('/pricer/pricings');
+                const res = await fetch('/api/pricings');
                 if (!res.ok) throw new Error(`HTTP error ${res.status}`);
                 const data: PricingItem[] = await res.json();
                 setItems(data);

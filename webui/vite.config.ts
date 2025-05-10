@@ -14,10 +14,10 @@ export default defineConfig({
         host: true,
         allowedHosts: ['dev-docker.voxon.lan'],
         proxy: {
-            '/pricer': {
-                target: 'http://pricer:8080',
+            '/api': {
+                target: 'http://api:8080',
                 changeOrigin: true,
-                rewrite: path => path.replace(/^\/pricer/, ''),
+                rewrite: path => path.replace(/^\/api/, ''),
             },
         },
     },

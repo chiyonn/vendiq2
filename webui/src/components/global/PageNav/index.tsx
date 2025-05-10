@@ -8,7 +8,7 @@ type Service = {
 
 const PageNav = () => {
     const services: Service[] = [
-        { name: '価格設定', host: '/pricer' },
+        { name: '価格設定', host: '/api' },
     ];
 
     const [statuses, setStatuses] = useState<Record<string, 'ok' | 'fail'>>({});
