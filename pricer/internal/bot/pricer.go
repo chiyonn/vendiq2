@@ -32,16 +32,15 @@ func (b *pricerBot) Stop(ctx context.Context) error {
 }
 
 func (b *pricerBot) fetchAllProductsOnSale(ctx context.Context) error {
-
 	var allSummaries []inventory.InventorySummary
-    var details bool = true
 	var nextToken *string
+	details := true
 
 	for {
-        params := &inventory.GetInventorySummariesParams{
-            Details: &details,
-            NextToken: nextToken,
-        }
+		params := &inventory.GetInventorySummariesParams{
+			Details:   &details,
+			NextToken: nextToken,
+		}
 
 		res, err := inventory.GetInventorySummaries(ctx, b.client, params)
 		if err != nil {
@@ -59,4 +58,3 @@ func (b *pricerBot) fetchAllProductsOnSale(ctx context.Context) error {
 	log.Printf("在庫取得できた件数: %d", len(allSummaries))
 	return nil
 }
-
