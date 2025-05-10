@@ -2,7 +2,6 @@ package types
 
 import (
 	"net/http"
-	"net/url"
 )
 
 type HTTPDoer interface {
@@ -10,7 +9,5 @@ type HTTPDoer interface {
 }
 
 type Queryable interface {
-	Stringfy() url.Values
+	Stringfy() string
 }
-
-

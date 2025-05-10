@@ -1,7 +1,6 @@
 package inventory
 
 import (
-	"net/url"
 	"time"
 
 	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/internal/queryutil"
@@ -19,8 +18,8 @@ type GetInventorySummariesParams struct {
 	MarketplaceIds  *[]string  `query:"marketplaceIds"`
 }
 
-func (p *GetInventorySummariesParams) Stringfy() url.Values {
-	return queryutil.StructToQuery(p)
+func (p *GetInventorySummariesParams) Stringfy() string {
+	return queryutil.StructToQuery(p).Encode()
 }
 
 type GetInventorySummariesResponse struct {
