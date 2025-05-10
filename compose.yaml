@@ -40,3 +40,15 @@ services:
       - ./pricer:/app
     environment:
       - APP_ENV=development
+    secrets:
+      - SPAPI_REFRESH_TOKEN
+      - LWA_CLIENT_ID
+      - LWA_CLIENT_SECRET
+
+secrets:
+  SPAPI_REFRESH_TOKEN:
+    file: ./secrets/spapi_refresh_token.txt
+  LWA_CLIENT_ID:
+    file: ./secrets/lwa_client_id.txt
+  LWA_CLIENT_SECRET:
+    file: ./secrets/lwa_client_secret.txt
