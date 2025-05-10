@@ -19,3 +19,13 @@ func ReadSecret(key string) (string, error) {
 
 	return strings.TrimSpace(string(data)), nil
 }
+
+func MustReadSecret(key string) string {
+	val, err := ReadSecret(key)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "critical secret %q could not be loaded: %v\n", key, err)
+		os.Exit(1)
+	}
+	return val
+}
+
