@@ -24,26 +24,32 @@ func StructToQuery(i any) url.Values {
 		}
 
 		fv := v.Field(idx)
-		if !fv.IsValid() || fv.IsNil() {
+		if !fv.IsValid() {
 			continue
 		}
-		val := fv.Elem()
 
-		switch val.Kind() {
+		if fv.Kind() == reflect.Ptr {
+			if fv.IsNil() {
+				continue
+			}
+			fv = fv.Elem()
+		}
+
+		switch fv.Kind() {
 		case reflect.Slice:
-			for j := 0; j < val.Len(); j++ {
-				values.Add(tag, fmt.Sprint(val.Index(j).Interface()))
+			for j := 0; j < fv.Len(); j++ {
+				values.Add(tag, fmt.Sprint(fv.Index(j).Interface()))
 			}
 		case reflect.String:
-			values.Set(tag, val.String())
+			values.Set(tag, fv.String())
 		case reflect.Bool:
-			values.Set(tag, strconv.FormatBool(val.Bool()))
+			values.Set(tag, strconv.FormatBool(fv.Bool()))
 		case reflect.Struct:
-			if tm, ok := val.Interface().(time.Time); ok {
+			if tm, ok := fv.Interface().(time.Time); ok {
 				values.Set(tag, tm.Format(time.RFC3339))
 			}
 		default:
-			values.Set(tag, fmt.Sprint(val.Interface()))
+			values.Set(tag, fmt.Sprint(fv.Interface()))
 		}
 	}
 
