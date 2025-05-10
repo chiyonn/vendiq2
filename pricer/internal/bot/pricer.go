@@ -8,6 +8,8 @@ import (
 	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/inventory"
 )
 
+const MarketplaceIdJP = "A1VC38T7YXB528"
+
 type PricerBot interface {
 	Run(ctx context.Context) error
 	Stop(ctx context.Context) error
@@ -38,8 +40,11 @@ func (b *pricerBot) fetchAllProductsOnSale(ctx context.Context) error {
 
 	for {
 		params := &inventory.GetInventorySummariesParams{
+            GranularityType: "Marketplace",
+            GranularityId: MarketplaceIdJP,
 			Details:   &details,
 			NextToken: nextToken,
+            MarketplaceIds: []string{MarketplaceIdJP},
 		}
 
 		res, err := inventory.GetInventorySummaries(ctx, b.client, params)

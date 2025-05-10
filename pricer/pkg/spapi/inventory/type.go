@@ -9,13 +9,13 @@ import (
 
 type GetInventorySummariesParams struct {
 	Details         *bool      `query:"details"`
-	GranularityType *string    `query:"granularityType"`
-	GranularityId   *string    `query:"granularityId"`
+	GranularityType string    `query:"granularityType"`
+	GranularityId   string    `query:"granularityId"`
 	StartDateTime   *time.Time `query:"startDateTime"`
 	SellerSkus      *[]string  `query:"sellerSkus"`
 	SellerSku       *string    `query:"sellerSku"`
 	NextToken       *string    `query:"nextToken"`
-	MarketplaceIds  *[]string  `query:"marketplaceIds"`
+	MarketplaceIds  []string  `query:"marketplaceIds"`
 }
 
 func (p *GetInventorySummariesParams) Stringfy() string {

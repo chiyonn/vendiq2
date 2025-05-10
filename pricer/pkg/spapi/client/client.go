@@ -15,6 +15,7 @@ import (
 	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/types"
 )
 
+const spapiBaseURL = "https://sellingpartnerapi-fe.amazon.com"
 const tokenEndpoint = "https://api.amazon.com/auth/o2/token"
 
 type Client struct {
@@ -32,7 +33,7 @@ type Client struct {
 
 func New(cfg *Config, logger *slog.Logger) (*Client, error) {
 	return &Client{
-		BaseURL:      cfg.BaseURL,
+		BaseURL:      spapiBaseURL,
 		HTTPClient:   &http.Client{Timeout: 10 * time.Second},
 		Logger:       logger,
 		refreshToken: cfg.RefreshToken,
