@@ -1,11 +1,13 @@
 package client
 
 import (
-	"bytes"
+    "strings"
+    "net/url"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"sync"
 	"time"
@@ -18,7 +20,7 @@ const tokenEndpoint = "https://api.amazon.com/auth/o2/token"
 type Client struct {
 	BaseURL    string
 	HTTPClient *http.Client
-	Logger     *types.Logger
+	Logger     *slog.Logger
 
 	mu           sync.Mutex
 	accessToken  string
@@ -28,7 +30,7 @@ type Client struct {
 	clientSecret string
 }
 
-func New(cfg *types.Config, logger *types.Logger) *Client {
+func New(cfg *Config, logger *slog.Logger) (*Client, error) {
 	return &Client{
 		BaseURL:      cfg.BaseURL,
 		HTTPClient:   &http.Client{Timeout: 10 * time.Second},
@@ -36,7 +38,7 @@ func New(cfg *types.Config, logger *types.Logger) *Client {
 		refreshToken: cfg.RefreshToken,
 		clientID:     cfg.ClientID,
 		clientSecret: cfg.ClientSecret,
-	}
+	}, nil
 }
 
 func (c *Client) getAccessToken(ctx context.Context) error {
@@ -47,15 +49,17 @@ func (c *Client) getAccessToken(ctx context.Context) error {
 		return nil // still valid
 	}
 
-	reqBody, _ := json.Marshal(map[string]string{
-		"grant_type":    "refresh_token",
-		"refresh_token": c.refreshToken,
-		"client_id":     c.clientID,
-		"client_secret": c.clientSecret,
-	})
+	form := url.Values{}
+	form.Set("grant_type", "refresh_token")
+	form.Set("refresh_token", c.refreshToken)
+	form.Set("client_id", c.clientID)
+	form.Set("client_secret", c.clientSecret)
 
-	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, tokenEndpoint, bytes.NewBuffer(reqBody))
-	req.Header.Set("Content-Type", "application/json")
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, tokenEndpoint, strings.NewReader(form.Encode()))
+	if err != nil {
+		return fmt.Errorf("failed to create token request: %w", err)
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
@@ -70,14 +74,16 @@ func (c *Client) getAccessToken(ctx context.Context) error {
 
 	var data struct {
 		AccessToken string `json:"access_token"`
-		ExpiresIn   int    `json:"expires_in"`
+		ExpiresIn   int    `json:"expires_in"` // seconds
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
 		return fmt.Errorf("token decode failed: %w", err)
 	}
 
+	// buffer 60 sec
 	c.accessToken = data.AccessToken
 	c.expiresAt = time.Now().Add(time.Duration(data.ExpiresIn-60) * time.Second)
+
 	return nil
 }
 
