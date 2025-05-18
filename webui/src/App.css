@@ -1,3 +1,19 @@
+:root {
+    /* COLORS */
+    --white: #FFFFFF;
+    --gray: #CCCCCC;
+    --cream: #F4F4F4;
+
+    --bg-main: var(--white);
+    --bg-sub: var(--cream);
+
+    --border-main: 1px solid var(--gray);
+}
+
 #root {
-  width: 100vw;
+    width: 100vw;
+}
+
+body {
+    background: var(--white);
 }

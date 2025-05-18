@@ -1,6 +1,9 @@
 .container {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--bg-sub);
+    border-right: var(--border-main);
 }
 
 .row {
