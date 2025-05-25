@@ -18,7 +18,11 @@ type PricerBot interface {
 
 type pricerBot struct {
 	client    *client.Client
-	inventory *inventory.InventoryAPI
+	inventory InventoryManager
+}
+
+type InventoryManager interface {
+	GetInventorySummaries(params *inventory.GetInventorySummariesParams) (*inventory.GetInventorySummariesResponse, error)
 }
 
 func NewPricerBot(cfg *auth.AuthConfig, httpClient *http.Client) (PricerBot, error) {
