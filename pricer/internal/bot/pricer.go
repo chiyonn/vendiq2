@@ -40,7 +40,7 @@ func NewPricerBot(cfg *auth.AuthConfig, httpClient *http.Client) (PricerBot, err
 }
 
 func (b *DefaultPricerBot) Run(ctx context.Context) error {
-	_, err := b.fetchAllProductsOnSale(ctx)
+	_, err := b.FetchAllProductsOnSale(ctx)
 	return err
 }
 
@@ -48,7 +48,7 @@ func (b *DefaultPricerBot) Stop(ctx context.Context) error {
 	panic("not implemented")
 }
 
-func (b *DefaultPricerBot) fetchAllProductsOnSale(ctx context.Context) ([]inventory.InventorySummary, error) {
+func (b *DefaultPricerBot) FetchAllProductsOnSale(ctx context.Context) ([]inventory.InventorySummary, error) {
 	var allSummaries []inventory.InventorySummary
 	var nextToken *string
 	details := true
@@ -67,8 +67,11 @@ func (b *DefaultPricerBot) fetchAllProductsOnSale(ctx context.Context) ([]invent
 			return nil, err
 		}
 
-		// TODO: append only items in stock.
-		allSummaries = append(allSummaries, res.Payload.InventorySummaries...)
+		for _, summary := range res.Payload.InventorySummaries {
+			if *summary.TotalQuantity > 0 {
+				allSummaries = append(allSummaries, summary)
+			}
+		}
 
 		if res.Pagination == nil || res.Pagination.NextToken == nil || *res.Pagination.NextToken == "" {
 			break
