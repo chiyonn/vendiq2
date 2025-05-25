@@ -3,7 +3,6 @@ package bot
 import (
 	"context"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/chiyonn/spapi/auth"
@@ -23,16 +22,7 @@ type pricerBot struct {
 	inventory *inventory.InventoryAPI
 }
 
-func NewPricerBot() (PricerBot, error) {
-	cfg, err := auth.NewAuthConfig(
-		os.Getenv("SPAPI_REFRESH_TOKEN"),
-		os.Getenv("LWA_CLIENT_ID"),
-		os.Getenv("LWA_CLIENT_SECRET"),
-	)
-	if err != nil {
-		return nil, err
-	}
-
+func NewPricerBot(cfg *auth.AuthConfig) (PricerBot, error) {
 	c, err := client.NewClient(&http.Client{Timeout: 10 * time.Second}, "JP", cfg, client.NewRateLimitManager())
 	if err != nil {
 		return nil, err

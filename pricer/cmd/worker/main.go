@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/chiyonn/spapi/auth"
 	"github.com/chiyonn/vendiq2/pricer/internal/bot"
 	"github.com/chiyonn/vendiq2/pricer/internal/core"
-	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/client"
 )
 
 func main() {
@@ -24,8 +24,8 @@ func setupLogger() *slog.Logger {
 	return slog.New(slog.NewTextHandler(os.Stdout, nil))
 }
 
-func loadConfig() *client.Config {
-	return &client.Config{
+func loadConfig() *auth.AuthConfig {
+	return &auth.AuthConfig{
 		RefreshToken: core.MustReadSecret("SPAPI_REFRESH_TOKEN"),
 		ClientID:     core.MustReadSecret("LWA_CLIENT_ID"),
 		ClientSecret: core.MustReadSecret("LWA_CLIENT_SECRET"),
@@ -33,7 +33,8 @@ func loadConfig() *client.Config {
 }
 
 func runBot(ctx context.Context) error {
-	b, err := bot.NewPricerBot()
+	cfg := loadConfig()
+	b, err := bot.NewPricerBot(cfg)
 	if err != nil {
 		return err
 	}
