@@ -10,24 +10,6 @@ services:
     volumes:
       - ./webui:/app
 
-  api:
-    container_name: dev-vendiq2-api
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    command: air
-    volumes:
-      - ./api:/app
-    environment:
-      - APP_ENV=development
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_USER=${DB_USER}
-      - DB_PSWD=${DB_PSWD}
-      - DB_NAME=${DB_NAME}
-
   pricer:
     container_name: dev-vendiq2-pricer
     build:
@@ -40,6 +22,11 @@ services:
       - ./pricer:/app
     environment:
       - APP_ENV=development
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PSWD=${DB_PSWD}
+      - DB_NAME=${DB_NAME}
     secrets:
       - SPAPI_REFRESH_TOKEN
       - LWA_CLIENT_ID
