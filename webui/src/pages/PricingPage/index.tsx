@@ -10,7 +10,7 @@ const PricingPage = () => {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const res = await fetch('/api/pricings');
+                const res = await fetch('/pricer/pricings');
                 if (!res.ok) throw new Error(`HTTP error ${res.status}`);
                 const data: PricingItem[] = await res.json();
                 setItems(data);
@@ -32,7 +32,7 @@ const PricingPage = () => {
 
     const handleSaveItem = async (index: number, item: PricingItem) => {
         try {
-            const res = await fetch(`/api/pricing/${item.ASIN}`, {
+            const res = await fetch(`/pricer/pricing/${item.ASIN}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
