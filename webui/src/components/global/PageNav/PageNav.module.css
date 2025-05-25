@@ -8,6 +8,8 @@
 
 .row {
     display: flex;
+    gap: 16px;
+    padding: 8px;
     justify-content: space-between;
 }
 

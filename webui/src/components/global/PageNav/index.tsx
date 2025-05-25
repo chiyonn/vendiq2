@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './PageNav.module.css';
 
 type Service = {
@@ -35,7 +36,7 @@ const PageNav = () => {
         <div className={styles.container}>
             {services.map((service) => (
                 <div className={styles.row} key={service.host}>
-                    <p>{service.name}</p>
+                    <Link to="/pricing">{service.name}</Link>
                     <p className={statuses[service.host] === 'ok' ? styles.green : styles.red}>
                         ●
                     </p>

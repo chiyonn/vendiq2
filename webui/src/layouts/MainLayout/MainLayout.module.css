@@ -17,11 +17,6 @@
     flex-direction: row;
 }
 
-.sidebarLeft,
-.sidebarRight {
-    width: 200px;
-}
-
 .main {
     flex: 1;
     place-items: center;
