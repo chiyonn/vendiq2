@@ -24,6 +24,7 @@ func NewRouter() http.Handler {
 
 	r.Get("/pricings", pricingHandler.GetAll)
 
+	r.Get("/queues", queueHandler.GetQueues)
 	r.Post("/queue", queueHandler.PostQueue)
 
 	return r
