@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './PricingPage.module.css';
 import { PricingRow, PricingRowHeader, PricingItem } from '@/components/pricing/PricingRow';
 
@@ -69,6 +70,7 @@ const PricingPage = () => {
         <div className={styles.container}>
             <div className={styles.controller}>
                 <button onClick={handlePricingNow}>今すぐ価格調整をする</button>
+                <Link to="/pricing/queues">予約を見る</Link>
             </div>
             <PricingRowHeader />
             {items.map((item, index) => (
