@@ -2,10 +2,13 @@ package bot
 
 import (
 	"context"
-	"log"
+	"net/http"
+	"os"
+	"time"
 
-	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/client"
-	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/inventory"
+	"github.com/chiyonn/spapi/auth"
+	"github.com/chiyonn/spapi/client"
+	"github.com/chiyonn/spapi/endpoint/inventory"
 )
 
 const MarketplaceIdJP = "A1VC38T7YXB528"
@@ -16,42 +19,62 @@ type PricerBot interface {
 }
 
 type pricerBot struct {
-	client *client.Client
+	client    *client.Client
+	inventory *inventory.InventoryAPI
 }
 
-func NewPricerBot(c *client.Client) PricerBot {
-	return &pricerBot{
-		client: c,
+func NewPricerBot() (PricerBot, error) {
+	cfg, err := auth.NewAuthConfig(
+		os.Getenv("SPAPI_REFRESH_TOKEN"),
+		os.Getenv("LWA_CLIENT_ID"),
+		os.Getenv("LWA_CLIENT_SECRET"),
+	)
+	if err != nil {
+		return nil, err
 	}
+
+	c, err := client.NewClient(&http.Client{Timeout: 10 * time.Second}, "JP", cfg, client.NewRateLimitManager())
+	if err != nil {
+		return nil, err
+	}
+
+	invAPI := inventory.NewInventoryAPI(c)
+
+	return &pricerBot{
+		client:    c,
+		inventory: invAPI,
+	}, nil
 }
 
 func (b *pricerBot) Run(ctx context.Context) error {
-	return b.fetchAllProductsOnSale(ctx)
+	_, err := b.fetchAllProductsOnSale(ctx)
+	return err
 }
 
 func (b *pricerBot) Stop(ctx context.Context) error {
-	return nil
+	panic("not implemented")
 }
 
-func (b *pricerBot) fetchAllProductsOnSale(ctx context.Context) error {
+func (b *pricerBot) fetchAllProductsOnSale(ctx context.Context) ([]inventory.InventorySummary, error) {
 	var allSummaries []inventory.InventorySummary
 	var nextToken *string
 	details := true
 
 	for {
 		params := &inventory.GetInventorySummariesParams{
-            GranularityType: "Marketplace",
-            GranularityId: MarketplaceIdJP,
-			Details:   &details,
-			NextToken: nextToken,
-            MarketplaceIds: []string{MarketplaceIdJP},
+			GranularityType: "Marketplace",
+			GranularityId:   MarketplaceIdJP,
+			Details:         &details,
+			NextToken:       nextToken,
+			MarketplaceIds:  []string{MarketplaceIdJP},
 		}
 
-		res, err := inventory.GetInventorySummaries(ctx, b.client, params)
+		res, err := b.inventory.GetInventorySummaries(params)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
+		// TODO: append only items in stock.
 		allSummaries = append(allSummaries, res.Payload.InventorySummaries...)
 
 		if res.Pagination == nil || res.Pagination.NextToken == nil || *res.Pagination.NextToken == "" {
@@ -60,6 +83,5 @@ func (b *pricerBot) fetchAllProductsOnSale(ctx context.Context) error {
 		nextToken = res.Pagination.NextToken
 	}
 
-	log.Printf("在庫取得できた件数: %d", len(allSummaries))
-	return nil
+	return allSummaries, nil
 }

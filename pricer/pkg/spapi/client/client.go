@@ -1,22 +1,24 @@
 package client
 
 import (
-    "strings"
-    "net/url"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
+	"net/url"
+	"strings"
 	"sync"
 	"time"
 
 	"github.com/chiyonn/vendiq2/pricer/pkg/spapi/types"
 )
 
-const spapiBaseURL = "https://sellingpartnerapi-fe.amazon.com"
-const tokenEndpoint = "https://api.amazon.com/auth/o2/token"
+const (
+	spapiBaseURL  = "https://sellingpartnerapi-fe.amazon.com"
+	tokenEndpoint = "https://api.amazon.com/auth/o2/token"
+)
 
 type Client struct {
 	BaseURL    string

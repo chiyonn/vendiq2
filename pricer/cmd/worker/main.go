@@ -13,15 +13,8 @@ import (
 func main() {
 	logger := setupLogger()
 
-	cfg := loadConfig()
-	spapiClient, err := client.New(cfg, logger)
-	if err != nil {
-		logger.Error("client initialization failed", slog.Any("err", err))
-		os.Exit(1)
-	}
-
 	ctx := context.Background()
-	if err := runBot(ctx, spapiClient); err != nil {
+	if err := runBot(ctx ); err != nil {
 		logger.Error("bot execution failed", slog.Any("err", err))
 		os.Exit(1)
 	}
@@ -39,8 +32,12 @@ func loadConfig() *client.Config {
 	}
 }
 
-func runBot(ctx context.Context, c *client.Client) error {
-	b := bot.NewPricerBot(c)
+func runBot(ctx context.Context) error {
+	b, err := bot.NewPricerBot()
+	if err != nil {
+		return err
+	}
+	
 	if err := b.Run(ctx); err != nil {
 		return err
 	}
