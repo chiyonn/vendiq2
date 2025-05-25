@@ -14,13 +14,17 @@ func NewRouter() http.Handler {
 	r := chi.NewRouter()
 	database := db.GetDB()
 	repo := repository.NewPricingRepository(database)
-	srv := service.NewPricingService(repo)
+	psrv := service.NewPricingService(repo)
+	qsrv := service.NewQueueService()
 
-	h := handler.NewPricingHandler(srv)
+	pricingHandler := handler.NewPricingHandler(psrv)
+	queueHandler := handler.NewQueueHandler(qsrv)
 
 	r.Get("/health", handler.Health)
-	r.Get("/pricings", h.GetAll)
+
+	r.Get("/pricings", pricingHandler.GetAll)
+
+	r.Post("/queue", queueHandler.PostQueue)
 
 	return r
 }
-
