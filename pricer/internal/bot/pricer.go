@@ -3,7 +3,6 @@ package bot
 import (
 	"context"
 	"net/http"
-	"time"
 
 	"github.com/chiyonn/spapi/auth"
 	"github.com/chiyonn/spapi/client"
@@ -22,8 +21,8 @@ type pricerBot struct {
 	inventory *inventory.InventoryAPI
 }
 
-func NewPricerBot(cfg *auth.AuthConfig) (PricerBot, error) {
-	c, err := client.NewClient(&http.Client{Timeout: 10 * time.Second}, "JP", cfg, client.NewRateLimitManager())
+func NewPricerBot(cfg *auth.AuthConfig, httpClient *http.Client) (PricerBot, error) {
+	c, err := client.NewClient(httpClient, "JP", cfg, client.NewRateLimitManager())
 	if err != nil {
 		return nil, err
 	}

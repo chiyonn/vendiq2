@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"log/slog"
+	"net/http"
 	"os"
+	"time"
 
 	"github.com/chiyonn/spapi/auth"
 	"github.com/chiyonn/vendiq2/pricer/internal/bot"
@@ -33,8 +35,9 @@ func loadConfig() *auth.AuthConfig {
 }
 
 func runBot(ctx context.Context) error {
+	httpc := &http.Client{Timeout: 2 * time.Second}
 	cfg := loadConfig()
-	b, err := bot.NewPricerBot(cfg)
+	b, err := bot.NewPricerBot(cfg, httpc)
 	if err != nil {
 		return err
 	}
