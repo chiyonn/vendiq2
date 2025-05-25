@@ -10,10 +10,6 @@
     --border-main: 1px solid var(--gray);
 }
 
-#root {
-    width: 100vw;
-}
-
 body {
     background: var(--white);
 }
