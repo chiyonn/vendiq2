@@ -30,6 +30,19 @@ const PricingPage = () => {
         );
     };
 
+    const handlePricingNow = async () => {
+        try {
+            const res = await fetch(`/pricer/queue`, {
+                method: 'POST',
+            });
+            if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+            alert("価格調整を予約しました。");
+        } catch (err) {
+            console.error("failed to post new queue", err);
+            alert("価格調整のリクエストに失敗しました");
+        }
+    };
+
     const handleSaveItem = async (index: number, item: PricingItem) => {
         try {
             const res = await fetch(`/pricer/pricing/${item.ASIN}`, {
@@ -54,6 +67,9 @@ const PricingPage = () => {
 
     return (
         <div className={styles.container}>
+            <div className={styles.controller}>
+                <button onClick={handlePricingNow}>今すぐ価格調整をする</button>
+            </div>
             <PricingRowHeader />
             {items.map((item, index) => (
                 <PricingRow
