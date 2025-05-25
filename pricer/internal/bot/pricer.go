@@ -16,7 +16,7 @@ type PricerBot interface {
 	Stop(ctx context.Context) error
 }
 
-type pricerBot struct {
+type DefaultPricerBot struct {
 	client    *client.Client
 	inventory InventoryManager
 }
@@ -33,22 +33,22 @@ func NewPricerBot(cfg *auth.AuthConfig, httpClient *http.Client) (PricerBot, err
 
 	invAPI := inventory.NewInventoryAPI(c)
 
-	return &pricerBot{
+	return &DefaultPricerBot{
 		client:    c,
 		inventory: invAPI,
 	}, nil
 }
 
-func (b *pricerBot) Run(ctx context.Context) error {
+func (b *DefaultPricerBot) Run(ctx context.Context) error {
 	_, err := b.fetchAllProductsOnSale(ctx)
 	return err
 }
 
-func (b *pricerBot) Stop(ctx context.Context) error {
+func (b *DefaultPricerBot) Stop(ctx context.Context) error {
 	panic("not implemented")
 }
 
-func (b *pricerBot) fetchAllProductsOnSale(ctx context.Context) ([]inventory.InventorySummary, error) {
+func (b *DefaultPricerBot) fetchAllProductsOnSale(ctx context.Context) ([]inventory.InventorySummary, error) {
 	var allSummaries []inventory.InventorySummary
 	var nextToken *string
 	details := true
