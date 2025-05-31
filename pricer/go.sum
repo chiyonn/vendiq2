@@ -1,5 +1,5 @@
-github.com/chiyonn/spapi v0.0.0-20250524101132-4868015558f4 h1:vjRJXKGu9zrEw2STUbwU1aoA1oQBHrKbDsSTdmpu5gA=
-github.com/chiyonn/spapi v0.0.0-20250524101132-4868015558f4/go.mod h1:NqdEqDkfOtACGD54Ru+OHcnetTMdTG3hd4yBZD34aa4=
+github.com/chiyonn/spapi v0.0.0-20250531042911-029b4cf5be8b h1:rCKc+ordPHxaerZfchcm6YIfjxTS+nPJpbr4JBibXLs=
+github.com/chiyonn/spapi v0.0.0-20250531042911-029b4cf5be8b/go.mod h1:NqdEqDkfOtACGD54Ru+OHcnetTMdTG3hd4yBZD34aa4=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/go-chi/chi/v5 v5.2.1 h1:KOIHODQj58PmL80G2Eak4WdvUzjSJSm0vG72crDCqb8=
