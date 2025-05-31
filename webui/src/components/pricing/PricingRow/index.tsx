@@ -22,17 +22,11 @@ type Props = {
     onSave: (index: number, item: PricingItem) => void;
 };
 
-const my_seller_id = "A";
-
 export const PricingRowHeader = () => {
     return (
         <div className={styles.headerRow}>
             <div>ASIN</div>
-            <div>画像</div>
-            <div>現在価格</div>
             <div>最低価格</div>
-            <div>セラー数</div>
-            <div>カート取得</div>
             <div>自動</div>
             <div>最終更新</div>
             <div></div>
@@ -56,10 +50,6 @@ export const PricingRow = ({ index, item, onChange, onSave }: Props) => {
         <div className={styles.itemRow}>
             <div>{item.asin}</div>
             <div>
-                <img src={item.mainImageUrl} alt={item.asin} className={styles.image} />
-            </div>
-            <div>¥{item.buyboxPrice}</div>
-            <div>
                 <input
                     type="number"
                     value={item.buyboxPrice}
@@ -67,8 +57,6 @@ export const PricingRow = ({ index, item, onChange, onSave }: Props) => {
                     className={styles.input}
                 />
             </div>
-            <div>{item.numOfSellers}</div>
-            <div>{item.buyboxSellerId === my_seller_id ? "YES" : "NO"}</div>
             <div>
                 <input
                     type="checkbox"

@@ -14,6 +14,7 @@ const PricingPage = () => {
                 const res = await fetch('/pricer/pricings');
                 if (!res.ok) throw new Error(`HTTP error ${res.status}`);
                 const data: PricingItem[] = await res.json();
+                console.log(data)
                 setItems(data);
             } catch (err: any) {
                 setError(err.message ?? 'データ取得に失敗しました');
@@ -33,7 +34,7 @@ const PricingPage = () => {
 
     const handlePricingNow = async () => {
         try {
-            const res = await fetch(`/pricer/queue`, {
+            const res = await fetch(`/pricer/queues`, {
                 method: 'POST',
             });
             if (!res.ok) throw new Error(`HTTP error ${res.status}`);
@@ -44,9 +45,19 @@ const PricingPage = () => {
         }
     };
 
+    const handleSync = async () => {
+        try {
+            const res = await fetch("/pricer/pricings/sync")
+            if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+        } catch (err) {
+            console.error("failed to sync", err);
+            alert("価格情報の更新に失敗しました");
+        }
+    }
+
     const handleSaveItem = async (index: number, item: PricingItem) => {
         try {
-            const res = await fetch(`/pricer/pricing/${item.ASIN}`, {
+            const res = await fetch(`/pricer/pricings/${item.ASIN}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,9 +79,12 @@ const PricingPage = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.controller}>
-                <button onClick={handlePricingNow}>今すぐ価格調整をする</button>
-                <Link to="/pricing/queues">予約を見る</Link>
+            <div className={styles.header}>
+                <div className={styles.controller}>
+                    <button onClick={handlePricingNow}>今すぐ価格調整をする</button>
+                    <button onClick={handleSync}>価格情報を更新する</button>
+                </div>
+                <Link to="/pricings/queues">予約を見る</Link>
             </div>
             <PricingRowHeader />
             {items.map((item, index) => (

@@ -21,3 +21,26 @@ func (r *PricingRepository) ReadAll() ([]*model.Pricing, error) {
 	return pricings, nil
 }
 
+func (r *PricingRepository) ReadByASIN(asin string) (*model.Pricing, error) {
+	var pricing model.Pricing
+	if err := r.db.Where("asin = ?", asin).First(&pricing).Error; err != nil {
+		return nil, err
+	}
+	return &pricing, nil
+}
+
+func (r *PricingRepository) Create(pricing *model.Pricing) error {
+	if err := r.db.Create(pricing).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *PricingRepository) UpdateByASIN(asin string, pricing *model.Pricing) error {
+	if err := r.db.Model(&model.Pricing{}).
+		Where("asin = ?", asin).
+		Updates(pricing).Error; err != nil {
+		return err
+	}
+	return nil
+}

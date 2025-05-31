@@ -6,7 +6,12 @@
     font-size: 0.95rem;
 }
 
-.controller {
+.header {
     display: flex;
     justify-content: space-between;
+}
+
+.controller {
+    display: flex;
+    gap: 8px;
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"log"
 	"net/http"
 
@@ -31,7 +32,12 @@ func main() {
 
 	go consumer.StartConsumer(b)
 
-	r := router.NewRouter()
+	r, err := router.NewRouter(cfg, httpClient)
+	if err != nil {
+		log.Fatalf("failed to create router: %w", err)
+		os.Exit(1)
+	}
+
 	log.Println("Starting server on :8080")
 	http.ListenAndServe(":8080", r)
 }

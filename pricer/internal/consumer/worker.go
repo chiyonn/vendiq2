@@ -1,6 +1,7 @@
 package consumer
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 
@@ -55,7 +56,7 @@ func StartConsumer(b bot.PricerBot) {
 		if task.Type == "adjust_prices" {
 			log.Println("executing price adjustment via PricerBot...")
 
-			err := b.Run(nil)
+			err := b.Run(context.Background())
 			if err != nil {
 				log.Printf("PricerBot failed: %v", err)
 				msg.Nack(false, true)
