@@ -36,7 +36,7 @@ const PageNav = () => {
         <div className={styles.container}>
             {services.map((service) => (
                 <div className={styles.row} key={service.host}>
-                    <Link to="/pricing">{service.name}</Link>
+                    <Link to="/pricings">{service.name}</Link>
                     <p className={statuses[service.host] === 'ok' ? styles.green : styles.red}>
                         ●
                     </p>

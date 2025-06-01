@@ -8,9 +8,9 @@ function App() {
     return (
         <Routes>
             <Route element={<MainLayout />}>
-                <Route path="/" element={<Navigate to="/pricing" replace />} />
-                <Route path="/pricing" element={<PricingPage />} />
-                <Route path="/pricing/queues" element={<PricingQueuesPage />} />
+                <Route path="/" element={<Navigate to="/pricings" replace />} />
+                <Route path="/pricings" element={<PricingPage />} />
+                <Route path="/pricings/queues" element={<PricingQueuesPage />} />
             </Route>
         </Routes>
     );
