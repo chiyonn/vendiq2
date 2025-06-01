@@ -79,14 +79,16 @@ const PricingPage = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <div className={styles.controller}>
-                    <button onClick={handlePricingNow}>今すぐ価格調整をする</button>
-                    <button onClick={handleSync}>価格情報を更新する</button>
+            <div className={styles.sticky}>
+                <div className={styles.header}>
+                    <div className={styles.controller}>
+                        <button onClick={handlePricingNow}>今すぐ価格調整をする</button>
+                        <button onClick={handleSync}>価格情報を更新する</button>
+                    </div>
+                    <Link to="/pricings/queues">予約を見る</Link>
                 </div>
-                <Link to="/pricings/queues">予約を見る</Link>
+                <PricingRowHeader />
             </div>
-            <PricingRowHeader />
             {items.map((item, index) => (
                 <PricingRow
                     key={item.ASIN}

@@ -1,7 +1,6 @@
 .container {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 }
 
 .header {
@@ -15,9 +14,12 @@
 .contentWrapper {
     display: flex;
     flex-direction: row;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .main {
     flex: 1;
     place-items: center;
+    overflow-y: scroll;
 }
