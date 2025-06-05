@@ -4,7 +4,7 @@ VENDIQ2 is a set of small services for managing prices on Amazon. The repository
 
 ## Requirements
 
-This project requires [Go](https://go.dev/dl/) **1.23** or newer.
+This project requires [Go](https://go.dev/dl/) **1.24** or newer.
 
 ## Directory overview
 
