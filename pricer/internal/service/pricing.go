@@ -9,17 +9,21 @@ import (
 	"github.com/chiyonn/vendiq2/pricer/internal/model"
 	"github.com/chiyonn/vendiq2/pricer/internal/repository"
 
-	"gorm.io/gorm"
 	"github.com/chiyonn/spapi/auth"
 	"github.com/chiyonn/spapi/client"
 	"github.com/chiyonn/spapi/endpoint/inventory"
+	"gorm.io/gorm"
 )
 
 const MarketplaceIdJP = "A1VC38T7YXB528"
 
+type InventoryAPI interface {
+	GetInventorySummaries(ctx context.Context, params *inventory.GetInventorySummariesParams) (*inventory.GetInventorySummariesResponse, error)
+}
+
 type PricingService struct {
 	repo      *repository.PricingRepository
-	inventory *inventory.InventoryAPI
+	inventory InventoryAPI
 }
 
 func NewPricingService(
@@ -65,7 +69,7 @@ func (h *PricingService) SyncAll() error {
 		asin := *i.ASIN
 
 		p := &model.Pricing{
-			ASIN: asin,
+			ASIN:        asin,
 			AutoPricing: false,
 		}
 
@@ -123,4 +127,3 @@ func (h *PricingService) FetchAllProductsOnSale(ctx context.Context) ([]inventor
 
 	return allSummaries, nil
 }
-

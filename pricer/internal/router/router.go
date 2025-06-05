@@ -19,7 +19,7 @@ func NewRouter(cfg *auth.AuthConfig, httpClient *http.Client) (http.Handler, err
 	qsrv := service.NewQueueService()
 	psrv, err := service.NewPricingService(cfg, httpClient, repo)
 	if err != nil {
-		return nil, fmt.Errorf("falied to initialize router: %w", err)
+		return nil, fmt.Errorf("failed to initialize router: %w", err)
 	}
 
 	pricingHandler := handler.NewPricingHandler(psrv)
