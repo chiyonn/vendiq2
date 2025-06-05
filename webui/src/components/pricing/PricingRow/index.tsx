@@ -52,7 +52,7 @@ export const PricingRow = ({ index, item, onChange, onSave }: Props) => {
             <div>
                 <input
                     type="number"
-                    value={item.buyboxPrice}
+                    value={item.minPrice ?? ''}
                     onChange={handleMinPriceChange}
                     className={styles.input}
                 />
