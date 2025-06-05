@@ -23,8 +23,8 @@ type PricerBot interface {
 
 type DefaultPricerBot struct {
 	client         *client.Client
-	srv			   *service.PricingService
-	inventory      *inventory.InventoryAPI
+	srv            *service.PricingService
+	inventory      service.InventoryAPI
 	listingsitem   *listingsitem.ListingsItemsAPI
 	productpricing *productpricing.ProductPricingAPI
 }
@@ -47,7 +47,7 @@ func NewPricerBot(cfg *auth.AuthConfig, httpClient *http.Client) (PricerBot, err
 
 	return &DefaultPricerBot{
 		client:         c,
-		srv: srv,
+		srv:            srv,
 		inventory:      invAPI,
 		listingsitem:   listAPI,
 		productpricing: pricingAPI,
@@ -97,7 +97,6 @@ func (b *DefaultPricerBot) Run(ctx context.Context) error {
 	//var patches []listingsitem.PatchOperation
 	//for _, p := range pricings {
 
-
 	//	val := map[string]any{
 	//		"marketplace_id": b.client.MarketplaceID,
 	//		"currency":       "JPY",
@@ -127,6 +126,40 @@ func (b *DefaultPricerBot) Run(ctx context.Context) error {
 	//}
 
 	return nil
+}
+
+func (b *DefaultPricerBot) FetchAllProductsOnSale(ctx context.Context) ([]inventory.InventorySummary, error) {
+	var allSummaries []inventory.InventorySummary
+	var nextToken *string
+	details := true
+
+	for {
+		params := &inventory.GetInventorySummariesParams{
+			GranularityType: "Marketplace",
+			GranularityId:   MarketplaceIdJP,
+			Details:         &details,
+			NextToken:       nextToken,
+			MarketplaceIds:  []string{MarketplaceIdJP},
+		}
+
+		res, err := b.inventory.GetInventorySummaries(ctx, params)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, summary := range res.Payload.InventorySummaries {
+			if summary.TotalQuantity != nil && *summary.TotalQuantity > 0 {
+				allSummaries = append(allSummaries, summary)
+			}
+		}
+
+		if res.Pagination == nil || res.Pagination.NextToken == nil || *res.Pagination.NextToken == "" {
+			break
+		}
+		nextToken = res.Pagination.NextToken
+	}
+
+	return allSummaries, nil
 }
 
 func (b *DefaultPricerBot) RetrieveASINsAdjustmentRequired(products []inventory.InventorySummary) []inventory.InventorySummary {

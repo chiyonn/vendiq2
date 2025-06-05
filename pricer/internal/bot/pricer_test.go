@@ -11,7 +11,7 @@ import (
 
 type filteringMockInventoryAPI struct{}
 
-func (m *filteringMockInventoryAPI) GetInventorySummaries(params *inventory.GetInventorySummariesParams) (*inventory.GetInventorySummariesResponse, error) {
+func (m *filteringMockInventoryAPI) GetInventorySummaries(ctx context.Context, params *inventory.GetInventorySummariesParams) (*inventory.GetInventorySummariesResponse, error) {
 	return &inventory.GetInventorySummariesResponse{
 		Payload: &inventory.GetInventorySummariesResult{
 			InventorySummaries: []inventory.InventorySummary{
@@ -23,12 +23,11 @@ func (m *filteringMockInventoryAPI) GetInventorySummaries(params *inventory.GetI
 	}, nil
 }
 
-
 type paginatedMockInventoryAPI struct {
 	callCount int
 }
 
-func (m *paginatedMockInventoryAPI) GetInventorySummaries(params *inventory.GetInventorySummariesParams) (*inventory.GetInventorySummariesResponse, error) {
+func (m *paginatedMockInventoryAPI) GetInventorySummaries(ctx context.Context, params *inventory.GetInventorySummariesParams) (*inventory.GetInventorySummariesResponse, error) {
 	m.callCount++
 
 	switch m.callCount {
@@ -90,4 +89,3 @@ func TestFetchAllProductsOnSale_Pagination(t *testing.T) {
 	assert.Equal(t, "PAGE1_ITEM1", *result[0].ASIN)
 	assert.Equal(t, "PAGE2_ITEM1", *result[1].ASIN)
 }
-

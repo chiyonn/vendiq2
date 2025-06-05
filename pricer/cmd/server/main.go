@@ -1,15 +1,15 @@
 package main
 
 import (
-	"os"
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/chiyonn/vendiq2/pricer/internal/bot"
+	"github.com/chiyonn/vendiq2/pricer/internal/consumer"
 	"github.com/chiyonn/vendiq2/pricer/internal/core"
 	"github.com/chiyonn/vendiq2/pricer/internal/db"
-	"github.com/chiyonn/vendiq2/pricer/internal/bot"
 	"github.com/chiyonn/vendiq2/pricer/internal/router"
-	"github.com/chiyonn/vendiq2/pricer/internal/consumer"
 
 	"github.com/chiyonn/spapi/auth"
 )
@@ -34,7 +34,7 @@ func main() {
 
 	r, err := router.NewRouter(cfg, httpClient)
 	if err != nil {
-		log.Fatalf("failed to create router: %w", err)
+		log.Fatalf("failed to create router: %v", err)
 		os.Exit(1)
 	}
 
