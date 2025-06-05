@@ -2,6 +2,10 @@
 
 VENDIQ2 is a set of small services for managing prices on Amazon. The repository contains a Go backend, a job worker and a React front‑end.
 
+## Requirements
+
+This project requires [Go](https://go.dev/dl/) **1.23** or newer.
+
 ## Directory overview
 
 - **api** – simple REST API exposing pricing data from MySQL.

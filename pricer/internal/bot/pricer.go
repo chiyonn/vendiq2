@@ -28,7 +28,7 @@ type inventoryAPI interface {
 type DefaultPricerBot struct {
 	client         *client.Client
 	srv            *service.PricingService
-	inventory      inventoryAPI
+	inventory      *inventory.InventoryAPI
 	listingsitem   *listingsitem.ListingsItemsAPI
 	productpricing *productpricing.ProductPricingAPI
 }
