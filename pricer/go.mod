@@ -1,6 +1,6 @@
 module github.com/chiyonn/vendiq2/pricer
 
-go 1.23.9
+go 1.24
 
 require (
 	github.com/chiyonn/spapi v0.0.0-20250531042911-029b4cf5be8b
