@@ -14,6 +14,7 @@ import (
 
 func NewRouter(cfg *auth.AuthConfig, httpClient *http.Client) (http.Handler, error) {
 	r := chi.NewRouter()
+	r.Use(LoggingMiddleware)
 	database := db.GetDB()
 	repo := repository.NewPricingRepository(database)
 	qsrv := service.NewQueueService()
