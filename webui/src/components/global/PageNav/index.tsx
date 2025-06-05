@@ -5,11 +5,13 @@ import styles from './PageNav.module.css';
 type Service = {
     name: string;
     host: string;
+    link: string;
 };
 
 const PageNav = () => {
     const services: Service[] = [
-        { name: '価格設定', host: '/pricer' },
+        { name: '価格設定', host: '/pricer', link: '/pricings' },
+        { name: 'リサーチ', host: '/researcher', link: '/research' },
     ];
 
     const [statuses, setStatuses] = useState<Record<string, 'ok' | 'fail'>>({});
@@ -36,7 +38,7 @@ const PageNav = () => {
         <div className={styles.container}>
             {services.map((service) => (
                 <div className={styles.row} key={service.host}>
-                    <Link to="/pricings">{service.name}</Link>
+                    <Link to={service.link}>{service.name}</Link>
                     <p className={statuses[service.host] === 'ok' ? styles.green : styles.red}>
                         ●
                     </p>
