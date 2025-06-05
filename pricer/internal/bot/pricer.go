@@ -21,10 +21,14 @@ type PricerBot interface {
 	Run(ctx context.Context) error
 }
 
+type inventoryAPI interface {
+	GetInventorySummaries(ctx context.Context, params *inventory.GetInventorySummariesParams) (*inventory.GetInventorySummariesResponse, error)
+}
+
 type DefaultPricerBot struct {
 	client         *client.Client
 	srv            *service.PricingService
-	inventory      service.InventoryAPI
+	inventory      *inventory.InventoryAPI
 	listingsitem   *listingsitem.ListingsItemsAPI
 	productpricing *productpricing.ProductPricingAPI
 }
