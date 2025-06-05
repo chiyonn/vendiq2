@@ -14,7 +14,6 @@ const PricingPage = () => {
                 const res = await fetch('/pricer/pricings');
                 if (!res.ok) throw new Error(`HTTP error ${res.status}`);
                 const data: PricingItem[] = await res.json();
-                console.log(data)
                 setItems(data);
             } catch (err: any) {
                 setError(err.message ?? 'データ取得に失敗しました');
