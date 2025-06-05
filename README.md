@@ -10,6 +10,7 @@ This project requires [Go](https://go.dev/dl/) **1.23** or newer.
 
 - **api** – simple REST API exposing pricing data from MySQL.
 - **pricer** – main service implementing price adjustment logic, RabbitMQ worker and HTTP endpoints.
+- **researcher** – minimal service exposing a `/health` endpoint.
 - **webui** – Vite + React front‑end to view and edit pricing and queue jobs.
 - **compose.yaml** – Docker Compose configuration for local development (frontend, pricer and RabbitMQ).
 - **Makefile** – helper targets to build and run the Docker environment.
