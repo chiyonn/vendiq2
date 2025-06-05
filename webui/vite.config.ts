@@ -19,6 +19,11 @@ export default defineConfig({
                 changeOrigin: true,
                 rewrite: path => path.replace(/^\/pricer/, ''),
             },
+            '/researcher': {
+                target: 'http://researcher:8080',
+                changeOrigin: true,
+                rewrite: path => path.replace(/^\/researcher/, ''),
+            },
         },
     },
 })
